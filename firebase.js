@@ -51,16 +51,12 @@ const firebaseConfig = {
 /* --------------------------------------------------------- */
 
 let app, auth, db;
-let _useDemo = false;
 
 try {
   app  = initializeApp(firebaseConfig);
   auth = getAuth(app);
   db   = getFirestore(app);
   console.log("✅ Firebase inicializado");
-} catch (e) {
-  console.warn("⚠️ Firebase não configurado. Usando modo demo.", e);
-  _useDemo = true;
 }
 /* ============================================================
    AUTH EXPORTS

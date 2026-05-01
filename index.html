@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1565C0" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="PortaFácil" />
+  <title>PortaFácil – Controle de Portaria</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen" class="screen active">
+  <div class="login-bg">
+    <div class="login-blob b1"></div>
+    <div class="login-blob b2"></div>
+  </div>
+  <div class="login-card">
+    <div class="login-logo"><span class="material-icons-round">apartment</span></div>
+    <h1 class="login-title">PortaFácil</h1>
+    <p class="login-sub">Controle de Portaria</p>
+    <div id="login-error" class="alert alert-error hidden"></div>
+    <div class="field">
+      <label>E-mail</label>
+      <input id="login-email" type="email" placeholder="porteiro@demo.com" autocomplete="username" />
+    </div>
+    <div class="field">
+      <label>Senha</label>
+      <input id="login-password" type="password" placeholder="••••••••" autocomplete="current-password" />
+    </div>
+    <button id="login-btn" class="btn btn-primary btn-full" onclick="doLogin()">
+      <span class="material-icons-round">login</span> Entrar
+    </button>
+    <p class="login-hint">Demo: porteiro@demo.com &nbsp;·&nbsp; demo123</p>
+  </div>
+</div>
+
+<!-- APP SHELL -->
+<div id="app-screen" class="screen">
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="material-icons-round">apartment</span><span>PortaFácil</span>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-item active" onclick="showSection('dashboard')" data-section="dashboard">
+        <span class="material-icons-round">dashboard</span><span>Dashboard</span>
+      </button>
+      <button class="nav-item" onclick="showSection('visitors')" data-section="visitors">
+        <span class="material-icons-round">directions_walk</span><span>Visitantes</span>
+      </button>
+      <button class="nav-item" onclick="showSection('packages')" data-section="packages">
+        <span class="material-icons-round">inventory_2</span><span>Encomendas</span>
+      </button>
+      <button class="nav-item" onclick="showSection('residents')" data-section="residents">
+        <span class="material-icons-round">people</span><span>Moradores</span>
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user" id="sidebar-user-info"></div>
+      <button class="btn-logout" onclick="doLogout()">
+        <span class="material-icons-round">logout</span> Sair
+      </button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <h2 id="section-title">Dashboard</h2>
+        <span id="section-date" class="section-date"></span>
+      </div>
+      <div class="topbar-right">
+        <span id="topbar-user" class="topbar-user"></span>
+      </div>
+    </header>
+
+    <!-- DASHBOARD -->
+    <section id="sec-dashboard" class="content-section active">
+      <div class="stats-grid">
+        <div class="stat-card blue" onclick="showSection('visitors')">
+          <div class="stat-icon"><span class="material-icons-round">directions_walk</span></div>
+          <div class="stat-info">
+            <span class="stat-num" id="stat-visitors">0</span>
+            <span class="stat-label">Visitantes hoje</span>
+          </div>
+          <span class="material-icons-round stat-arrow">arrow_forward</span>
+        </div>
+        <div class="stat-card green" onclick="showSection('visitors')">
+          <div class="stat-icon"><span class="material-icons-round">meeting_room</span></div>
+          <div class="stat-info">
+            <span class="stat-num" id="stat-inside">0</span>
+            <span class="stat-label">No condomínio agora</span>
+          </div>
+          <span class="material-icons-round stat-arrow">arrow_forward</span>
+        </div>
+        <div class="stat-card red" onclick="showSection('packages')">
+          <div class="stat-icon"><span class="material-icons-round">inventory_2</span></div>
+          <div class="stat-info">
+            <span class="stat-num" id="stat-packages">0</span>
+            <span class="stat-label">Encomendas pendentes</span>
+          </div>
+          <span class="material-icons-round stat-arrow">arrow_forward</span>
+        </div>
+        <div class="stat-card gray" onclick="showSection('residents')">
+          <div class="stat-icon"><span class="material-icons-round">people</span></div>
+          <div class="stat-info">
+            <span class="stat-num" id="stat-residents">0</span>
+            <span class="stat-label">Moradores cadastrados</span>
+          </div>
+          <span class="material-icons-round stat-arrow">arrow_forward</span>
+        </div>
+      </div>
+      <div class="dash-cols">
+        <div class="dash-col">
+          <div class="card">
+            <div class="card-header"><h3><span class="material-icons-round">directions_walk</span> Últimas Entradas</h3></div>
+            <div id="dash-recent-visitors" class="mini-list"></div>
+          </div>
+        </div>
+        <div class="dash-col">
+          <div class="card">
+            <div class="card-header"><h3><span class="material-icons-round">inventory_2</span> Encomendas Pendentes</h3></div>
+            <div id="dash-pending-packages" class="mini-list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VISITORS -->
+    <section id="sec-visitors" class="content-section">
+      <div class="action-bar">
+        <button class="btn btn-primary" onclick="openModal('modal-visitor')">
+          <span class="material-icons-round">add</span> Registrar Entrada
+        </button>
+      </div>
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterVisitors('all')" id="vf-all">Todos</button>
+        <button class="filter-btn" onclick="filterVisitors('inside')" id="vf-inside">No condomínio</button>
+        <button class="filter-btn" onclick="filterVisitors('outside')" id="vf-outside">Saíram</button>
+      </div>
+      <div id="visitors-list" class="item-list"></div>
+    </section>
+
+    <!-- PACKAGES -->
+    <section id="sec-packages" class="content-section">
+      <div class="action-bar">
+        <button class="btn btn-primary" onclick="openModal('modal-package')">
+          <span class="material-icons-round">add</span> Registrar Encomenda
+        </button>
+      </div>
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterPackages('all')" id="pf-all">Todas</button>
+        <button class="filter-btn" onclick="filterPackages('pending')" id="pf-pending">Pendentes</button>
+        <button class="filter-btn" onclick="filterPackages('delivered')" id="pf-delivered">Entregues</button>
+      </div>
+      <div id="packages-list" class="item-list"></div>
+    </section>
+
+    <!-- RESIDENTS -->
+    <section id="sec-residents" class="content-section">
+      <div class="action-bar">
+        <div class="search-box">
+          <span class="material-icons-round">search</span>
+          <input id="resident-search" type="text" placeholder="Buscar morador..." oninput="searchResidents()" />
+        </div>
+        <button class="btn btn-primary" onclick="openModal('modal-resident')">
+          <span class="material-icons-round">add</span> Novo Morador
+        </button>
+      </div>
+      <div id="residents-list" class="item-list"></div>
+    </section>
+  </main>
+
+  <!-- BOTTOM NAV mobile -->
+  <nav class="bottom-nav">
+    <button class="bnav-item active" onclick="showSection('dashboard')" data-section="dashboard">
+      <span class="material-icons-round">dashboard</span><span>Início</span>
+    </button>
+    <button class="bnav-item" onclick="showSection('visitors')" data-section="visitors">
+      <span class="material-icons-round">directions_walk</span><span>Visitantes</span>
+    </button>
+    <button class="bnav-item" onclick="showSection('packages')" data-section="packages">
+      <span class="material-icons-round">inventory_2</span><span>Encomendas</span>
+    </button>
+    <button class="bnav-item" onclick="showSection('residents')" data-section="residents">
+      <span class="material-icons-round">people</span><span>Moradores</span>
+    </button>
+  </nav>
+</div>
+
+<!-- MODALS -->
+<div id="modal-visitor" class="modal-overlay" onclick="closeModalOutside(event,'modal-visitor')">
+  <div class="modal">
+    <div class="modal-header">
+      <h3><span class="material-icons-round">directions_walk</span> Registrar Visitante</h3>
+      <button class="modal-close" onclick="closeModal('modal-visitor')"><span class="material-icons-round">close</span></button>
+    </div>
+    <div class="modal-body">
+      <div class="field"><label>Nome do Visitante *</label><input id="v-name" type="text" placeholder="Nome completo" /></div>
+      <div class="field"><label>Apartamento / Bloco *</label><input id="v-apt" type="text" placeholder="Ex: 101 – Bloco A" /></div>
+      <div class="field"><label>Motivo da visita</label><input id="v-reason" type="text" placeholder="Ex: visita, serviço..." /></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-visitor')">Cancelar</button>
+      <button class="btn btn-primary" onclick="addVisitor()"><span class="material-icons-round">check</span> Registrar Entrada</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-package" class="modal-overlay" onclick="closeModalOutside(event,'modal-package')">
+  <div class="modal">
+    <div class="modal-header">
+      <h3><span class="material-icons-round">inventory_2</span> Registrar Encomenda</h3>
+      <button class="modal-close" onclick="closeModal('modal-package')"><span class="material-icons-round">close</span></button>
+    </div>
+    <div class="modal-body">
+      <div class="field"><label>Destinatário *</label><input id="p-name" type="text" placeholder="Nome do morador" /></div>
+      <div class="field"><label>Apartamento / Bloco *</label><input id="p-apt" type="text" placeholder="Ex: 202 – Bloco B" /></div>
+      <div class="field"><label>Descrição</label><input id="p-desc" type="text" placeholder="Ex: caixa, sacola, envelope..." /></div>
+      <div class="field"><label>Remetente / Transportadora</label><input id="p-sender" type="text" placeholder="Ex: Correios, Amazon..." /></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-package')">Cancelar</button>
+      <button class="btn btn-primary" onclick="addPackage()"><span class="material-icons-round">check</span> Registrar</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-resident" class="modal-overlay" onclick="closeModalOutside(event,'modal-resident')">
+  <div class="modal">
+    <div class="modal-header">
+      <h3><span class="material-icons-round">person_add</span> Novo Morador</h3>
+      <button class="modal-close" onclick="closeModal('modal-resident')"><span class="material-icons-round">close</span></button>
+    </div>
+    <div class="modal-body">
+      <div class="field"><label>Nome Completo *</label><input id="r-name" type="text" placeholder="Nome do morador" /></div>
+      <div class="field-row">
+        <div class="field"><label>Bloco</label><input id="r-block" type="text" placeholder="Ex: A" /></div>
+        <div class="field"><label>Apartamento *</label><input id="r-apt" type="text" placeholder="Ex: 101" /></div>
+      </div>
+      <div class="field"><label>Telefone</label><input id="r-phone" type="tel" placeholder="(11) 99999-9999" /></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-resident')">Cancelar</button>
+      <button class="btn btn-primary" onclick="addResident()"><span class="material-icons-round">check</span> Cadastrar</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(e => console.log('SW reg error', e));
+    });
+  }
+</script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

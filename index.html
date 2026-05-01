@@ -1,29 +1,41 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <link rel="manifest" href="manifest.json">	
   <meta charset="UTF-8">
-  <title>Portaria App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portaria</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div id="login" class="card">
-  <h2>🔐 Portaria</h2>
-  <input type="email" id="email" placeholder="Email">
-  <input type="password" id="senha" placeholder="Senha">
-  <button onclick="login()">Entrar</button>
+<div id="login" class="login-container">
+  <div class="login-box">
+    <h2>🔐 Portaria</h2>
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="senha" placeholder="Senha">
+    <button onclick="login()">Entrar</button>
+  </div>
 </div>
 
-<div id="app">
+<div id="app" style="display:none;">
 
-  <header>
-    <h1>🏢 Portaria</h1>
-  </header>
+  <aside class="sidebar">
+    <h2>🏢</h2>
+    <button onclick="mostrar('home')">🏠 Início</button>
+    <button onclick="mostrar('moradores')">👤 Moradores</button>
+    <button onclick="mostrar('visitantes')">🚶 Visitantes</button>
+    <button onclick="mostrar('encomendas')">📦 Encomendas</button>
+  </aside>
 
-  <main id="conteudo"></main>
+  <div class="main">
+    <header>
+      <h1 id="titulo">Dashboard</h1>
+    </header>
 
-  <nav class="bottom-nav">
+    <section id="conteudo"></section>
+  </div>
+
+  <nav class="mobile-nav">
     <button onclick="mostrar('home')">🏠</button>
     <button onclick="mostrar('moradores')">👤</button>
     <button onclick="mostrar('visitantes')">🚶</button>
@@ -38,11 +50,6 @@
 
 <script src="firebase.js"></script>
 <script src="app.js"></script>
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js");
-}
-</script>
 
 </body>
 </html>

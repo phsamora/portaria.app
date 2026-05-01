@@ -62,29 +62,6 @@ try {
   console.warn("⚠️ Firebase não configurado. Usando modo demo.", e);
   _useDemo = true;
 }
-
-/* ============================================================
-   MODO DEMO (sem Firebase configurado)
-   Dados em memória para visualização
-   ============================================================ */
-const demo = {
-  user: { email: "porteiro@demo.com", displayName: "Porteiro Demo", role: "porteiro" },
-  visitors: [
-    { id: "v1", name: "Carlos Mendes", apt: "101 – Bloco A", reason: "visita", status: "inside",  entryTime: new Date(Date.now()-3600000), exitTime: null },
-    { id: "v2", name: "Fernanda Lima",  apt: "202 – Bloco B", reason: "serviço",  status: "outside", entryTime: new Date(Date.now()-7200000), exitTime: new Date(Date.now()-5400000) },
-  ],
-  packages: [
-    { id: "p1", recipientName: "João Silva",   apt: "301 – Bloco A", description: "caixa",    sender: "Amazon",   status: "pending",   receivedAt: new Date(Date.now()-86400000) },
-    { id: "p2", recipientName: "Maria Souza",  apt: "102 – Bloco C", description: "envelope", sender: "Correios", status: "delivered", receivedAt: new Date(Date.now()-172800000) },
-  ],
-  residents: [
-    { id: "r1", name: "João Silva",     block: "A", apt: "301", phone: "(11) 99999-1234" },
-    { id: "r2", name: "Maria Souza",    block: "C", apt: "102", phone: "(11) 98888-5678" },
-    { id: "r3", name: "Pedro Alves",    block: "B", apt: "202", phone: "(11) 97777-9012" },
-    { id: "r4", name: "Ana Costa",      block: "A", apt: "101", phone: "(11) 96666-3456" },
-  ]
-};
-
 /* ============================================================
    AUTH EXPORTS
    ============================================================ */

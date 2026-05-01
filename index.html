@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <link rel="manifest" href="manifest.json">	
+  <meta charset="UTF-8">
+  <title>Portaria App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="login" class="card">
+  <h2>🔐 Portaria</h2>
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="senha" placeholder="Senha">
+  <button onclick="login()">Entrar</button>
+</div>
+
+<div id="app">
+
+  <header>
+    <h1>🏢 Portaria</h1>
+  </header>
+
+  <main id="conteudo"></main>
+
+  <nav class="bottom-nav">
+    <button onclick="mostrar('home')">🏠</button>
+    <button onclick="mostrar('moradores')">👤</button>
+    <button onclick="mostrar('visitantes')">🚶</button>
+    <button onclick="mostrar('encomendas')">📦</button>
+  </nav>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+
+<script src="firebase.js"></script>
+<script src="app.js"></script>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+</script>
+
+</body>
+</html>
